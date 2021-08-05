@@ -1,0 +1,33 @@
+{
+  "name": "governance-token",
+  "version": "0.0.1",
+  "description": "StormX ERC-20 Governance token.",
+  "scripts": {
+    "coverage": "truffle run coverage",
+    "lint": "./node_modules/.bin/eslint ./test && ./node_modules/.bin/solhint contracts/*.sol",
+    "lint-fix": "./node_modules/.bin/eslint --fix ./test",
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stormx/governance-token.git"
+  },
+  "author": "bonnevoyager",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stormx/governance-token/issues"
+  },
+  "homepage": "https://github.com/stormx/governance-token#readme",
+  "devDependencies": {
+    "@openzeppelin/contracts-upgradeable": "^4.2.0",
+    "@openzeppelin/test-helpers": "^0.5.12",
+    "@openzeppelin/truffle-upgrades": "^1.8.0",
+    "@truffle/hdwallet-provider": "^1.4.2",
+    "chai": "^4.3.4",
+    "eslint": "^7.32.0",
+    "solhint": "^3.3.6",
+    "solidity-coverage": "^0.7.16",
+    "truffle": "^5.4.3",
+    "truffle-flattener": "^1.5.0"
+  }
+}
