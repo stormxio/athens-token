@@ -1,14 +1,12 @@
 const { deployProxy } = require('@openzeppelin/truffle-upgrades')
 
-const secrets = require('../secrets.js')
-
 const Governance = artifacts.require('Governance')
 
-module.exports = async function (deployer) {
+module.exports = async function (deployer, network, accounts) {
   const name = 'Governance'
   const symbol = 'SGOV'
   const initialSupply = 1000000
-  const owner = secrets.owner
+  const owner = accounts[0]
 
   await deployProxy(Governance, [name, symbol, initialSupply, owner], {
     deployer,

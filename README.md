@@ -44,7 +44,7 @@ The function `mint()` is used only during the `initialize()` to mint a fixed amo
 
 Anyone can call the method `transfers()` to perform multiple transferring in a single function call when transfers is allowed.
 
-```
+```solidity
 function transfers(
     address[] memory recipients, 
     uint256[] memory values
@@ -63,7 +63,7 @@ This feature comprises the following sections.
 
 By invoking the function `lock()`, users can lock any amount of Governance tokens as long as they have enough unlocked token balance. Locked tokens can not be manipulable by any means. Once the specified amount of tokens are locked successfully, an interest starts to be accumulated and calculated off-chain by StormX. The locked token balance of users can be read via read methods (see section Read Methods). While the users are not able to perform any operations on locked tokens, these locked tokens are still reported as owned by the users when method `balanceOf()` is called. The event `TokenLocked(address account, uint256 amount)` is emitted.
 
-```
+```solidity
 function lock(uint256 amount) public returns (bool)
 ```
 
@@ -71,7 +71,7 @@ function lock(uint256 amount) public returns (bool)
 
 By invoking the function `unlock()`, users are able to unlock any amount of locked Governance tokens they have, and are able to perform any operations on their unlocked tokens as desired. Once the specified amount of tokens becomes unlocked, those tokens will no longer accumulate interest. The event `TokenUnlocked(address account, uint256 amount)` is emitted.
 
-```
+```solidity
 function unlock(uint256 amount) public returns (bool)
 ```
 
@@ -87,7 +87,7 @@ Anyone can call read methods to retrieve the different kinds of balance.
 
 #### Reward
 
-Any interest accumulated is calculated off-chain and rewarded by StormX.
+Any rewards accumulated are calculated off-chain and sent to the StormX account holder.
 
 ### Upgradability
 
