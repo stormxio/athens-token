@@ -1,25 +1,12 @@
 {
-  "env": {
-    "es2020": true,
-    "node": true,
-    "mocha": true,
-    "jest": true
-  },
-  "extends": [
-    "eslint:recommended"
-  ],
-  "parserOptions": {
-    "sourceType": "module"
-  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "unused-imports"],
+  "env": {},
+  "extends": ["plugin:@typescript-eslint/recommended"],
+  "globals": {},
   "rules": {
-    "semi": [0],
-    "indent": [2, 2, { "SwitchCase": 1 }],
-    "comma-spacing": ["error", { "before": false, "after": true }],
-    "no-console": [0]
-  },
-  "globals": {
-    "artifacts": true,
-    "contract": true,
-    "assert": true
+    "@typescript-eslint/no-unused-vars": 1,
+    "unused-imports/no-unused-imports-ts": 1,
+    "no-shadow": 1
   }
 }

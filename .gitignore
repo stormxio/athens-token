@@ -1,8 +1,11 @@
 .DS_Store
 .openzeppelin/unknown-*.json
 .vscode
-build
-coverage
+artifacts/
+cache/
+coverage/
+node_modules/
+types/
+typechain/
 coverage.json
-node_modules
 secrets.js

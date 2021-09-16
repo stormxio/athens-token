@@ -1,5 +1,7 @@
 # governance-token
 
+[![Coverage](https://github.com/stormxio/governance-token/actions/workflows/Coverage.yml/badge.svg)](https://github.com/stormxio/governance-token/actions/workflows/Coverage.yml)
+
 ## Requirements
 
 Governance is the new token contract implemented by StormX. It supports the standard ERC20 interface, transferring in batch, upgradability, and staking features.
@@ -24,7 +26,7 @@ Governance is the new token contract implemented by StormX. It supports the stan
 
 ## Technical Executions
 
-StormX developed the contracts according to the requirements using Solidity and JavaScript for testing. This section outlines the technical solution.
+StormX developed the contracts according to the requirements using Solidity, Hardhat and TypeScript. This section outlines the technical solution.
 
 ### Standard ERC20 interface
 
@@ -34,7 +36,7 @@ Governance token is in compliance with ERC20 as described in ​[eip-20.md](htt
 
 Allowance double-spend exploit is mitigated in this contract with functions `increaseAllowance()` and `decreaseAllowance()`.
 
-However, community agreement on an ERC standard that would protect against this exploit is still pending. Users should be aware of this exploit when interacting with this contract.
+However, community agreement on an ERC standard that would protect against this exploit is still pending. Users should be aware of this exploit when interacting with this contract. Developers who use `approve()`/`transferFrom()` should keep in mind that they have to set allowance to 0 first and verify if it was used before setting the new value.
 
 ### Mint
 

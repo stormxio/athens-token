@@ -18,11 +18,11 @@ jobs:
       with:
         node-version: '14.x'
 
-    - name: Install
-      run: npm ci
+    - name: Install dependencies
+      run: yarn
 
     - name: Lint
-      run: npm run lint
+      run: yarn lint
 
     - name: Coverage
-      run: npm run coverage
+      run: yarn coverage
