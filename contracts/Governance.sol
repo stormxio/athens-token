@@ -6,19 +6,12 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
 contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
-    bool public transfersEnabled;
-
     // Staking variable
     mapping(address => uint256) public lockedBalanceOf;
 
+    // Staking events
     event TokenLocked(address indexed account, uint256 amount);
     event TokenUnlocked(address indexed account, uint256 amount);
-    event TransfersEnabled(bool newStatus);
-
-    modifier transfersAllowed {
-        require(transfersEnabled, "Governance: Transfers not available");
-        _;
-    }
 
     function initialize(
         string memory name_,
@@ -30,8 +23,12 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
     }
 
     /**
-     * @dev Sets the values for {name} and {symbol}
-     *      Mints {initialSupply} amount of token and transfers them to {owner}.
+     * @dev init function is used instead of constructors because
+     *      no constructors can be used in upgradable contracts
+     * @param name_ name of the token
+     * @param symbol_ symbol of the token
+     * @param initialSupply_ amount of tokens to be minted and transfered to {owner}
+     * @param owner_ smart contract owner
      */
     function __Governance_init(
         string memory name_,
@@ -45,13 +42,19 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
         __Governance_init_unchained(initialSupply_, owner_);
     }
 
+    /**
+     * @dev mints {initialSupply} amount of token for {owner}
+     * @param initialSupply_ amount of tokens to be minted for {owner}
+     * @param owner_ smart contract owner
+     */
     function __Governance_init_unchained(uint256 initialSupply_, address owner_) internal initializer {
-        transfersEnabled = true;
         _mint(owner_, initialSupply_);
     }
 
     /**
-     * @param account address of the user this function queries unlocked balance for
+     * @dev returns the amount of unlocked tokens the account holds
+     *      balanceOf - lockedBalanceOf should always be >= 0
+     * @param account address of a user to query for unlocked balance
      * @return the amount of unlocked tokens of the given address
      *         i.e. the amount of manipulable tokens of the given address
      */
@@ -119,23 +122,12 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
      * @param values an array of specified amount of tokens to be transferred
      * @return success status of the batch transferring
      */
-    function transfers(address[] memory recipients, uint256[] memory values) public transfersAllowed returns (bool) {
+    function transfers(address[] memory recipients, uint256[] memory values) public returns (bool) {
         require(recipients.length == values.length, "Governance: Input lengths do not match");
         for (uint256 i = 0; i < recipients.length; i++) {
             transfer(recipients[i], values[i]);
         }
         return true;
     }
-
-    /**
-     * @dev Enables the method ``transfers()`` if ``enable=true``,
-     *      and disables ``transfers()`` otherwise
-     * @param enable the expected new availability of the method ``transfers()``
-     */
-    function enableTransfers(bool enable) public onlyOwner returns (bool) {
-        transfersEnabled = enable;
-        emit TransfersEnabled(enable);
-        return true;
-    }
-    uint256[50] private __gap;
+    uint256[50] private __gap; // https://docs.openzeppelin.com/contracts/3.x/upgradeable#storage_gaps
 }

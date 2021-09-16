@@ -250,15 +250,6 @@ describe('Governance', async () => {
         .to.be.revertedWith('Governance: Input lengths do not match')
     })
 
-    it('reverts if transfers not available', async () => {
-      const recipients = [signers.user1.address, signers.user2.address]
-      const values = [100, 100]
-
-      await token.connect(signers.owner.signer).enableTransfers(false)
-      await expect(token.connect(signers.user1.signer).transfers(recipients, values))
-        .to.be.revertedWith('Governance: Transfers not available')
-    })
-
     it('reverts if any transfer fails', async () => {
       const recipients = [signers.user2.address, signers.user2.address]
       const values = [1000, 1]
@@ -275,41 +266,6 @@ describe('Governance', async () => {
       expect(await token.balanceOf(signers.user1.address)).to.equal(800)
       expect(await token.balanceOf(signers.user2.address)).to.equal(100)
       expect(await token.balanceOf(signers.owner.address)).to.equal(INITIAL_SUPPLY - 1000 + 100)
-    })
-
-    it('allows the owner and only the owner to enable/disable transfers', async () => {
-      const recipients = [signers.user2.address, signers.user2.address]
-      const values = [100, 100]
-
-      // non-owner fails to disable transfers
-      await expect(token.connect(signers.user1.signer).enableTransfers(false))
-        .to.be.revertedWith('Ownable: caller is not the owner')
-      await token.connect(signers.user1.signer).transfers(recipients, values)
-      expect(await token.balanceOf(signers.user1.address)).to.equal(800)
-      expect(await token.balanceOf(signers.user2.address)).to.equal(200)
-
-      // owner can disable transfers
-      await expect(token.connect(signers.owner.signer).enableTransfers(false))
-        .to.emit(token, 'TransfersEnabled').withArgs(false)
-      await expect(token.connect(signers.user1.signer).transfers(recipients, values))
-        .to.be.revertedWith('Governance: Transfers not available')
-      expect(await token.balanceOf(signers.user1.address)).to.equal(800)
-      expect(await token.balanceOf(signers.user2.address)).to.equal(200)
-
-      // non-owner fails to enable transfers
-      await expect(token.connect(signers.user1.signer).enableTransfers(true))
-        .to.be.revertedWith('Ownable: caller is not the owner')
-      await expect(token.connect(signers.user1.signer).transfers(recipients, values))
-        .to.be.revertedWith('Governance: Transfers not available')
-      expect(await token.balanceOf(signers.user1.address)).to.equal(800)
-      expect(await token.balanceOf(signers.user2.address)).to.equal(200)
-
-      // owner can enable transfers
-      await expect(token.connect(signers.owner.signer).enableTransfers(true))
-        .to.emit(token, 'TransfersEnabled').withArgs(true)
-      await token.connect(signers.user1.signer).transfers(recipients, values)
-      expect(await token.balanceOf(signers.user1.address)).to.equal(600)
-      expect(await token.balanceOf(signers.user2.address)).to.equal(400)
     })
   })
 
