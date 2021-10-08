@@ -95,6 +95,12 @@ describe('Governance', async () => {
   })
 
   describe('Transfers', () => {
+    it('reverts when transfering to the contract', async () => {
+      // expect to revert accidential transfers to the contract itself
+      await expect(token.connect(signers.user1.signer).transfer(token.address, 100))
+        .to.be.revertedWith('Governance: Transfers to the contract not allowed')
+    })
+
     it('sends transfer successfully', async () => {
       // no locked tokens initially
       expect(await token.lockedBalanceOf(signers.user2.address)).to.equal(0)
