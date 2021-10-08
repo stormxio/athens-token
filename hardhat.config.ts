@@ -8,7 +8,7 @@ import { HardhatUserConfig } from 'hardhat/config'
 import { SolcUserConfig } from 'hardhat/types'
 
 const DEFAULT_COMPILER_SETTINGS: SolcUserConfig = {
-  version: '0.8.0',
+  version: '0.8.4',
   settings: {
     optimizer: {
       enabled: true,
