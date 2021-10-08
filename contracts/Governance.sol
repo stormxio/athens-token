@@ -103,6 +103,8 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
 
     /**
      * @dev Transfers tokens in batch
+     *      Arrays with a very large number of elements could cause this function
+     *      to revert due to exceeding the block size during execution.
      * @param recipients an array of recipient addresses
      * @param values an array of specified amount of tokens to be transferred
      * @return success status of the batch transferring
