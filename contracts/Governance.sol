@@ -28,22 +28,8 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
         address owner_
     ) public virtual initializer {
         require(owner_ != address(0), "Owner must be non-zero address");
-        __Governance_init(name_, symbol_, initialSupply_, owner_);
-    }
-
-    function __Governance_init(
-        string memory name_,
-        string memory symbol_,
-        uint256 initialSupply_,
-        address owner_
-    ) internal initializer {
-        __Context_init_unchained();
         __Ownable_init_unchained();
         __ERC20_init_unchained(name_, symbol_);
-        __Governance_init_unchained(initialSupply_, owner_);
-    }
-
-    function __Governance_init_unchained(uint256 initialSupply_, address owner_) internal initializer {
         _mint(owner_, initialSupply_);
     }
 
