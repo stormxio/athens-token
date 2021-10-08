@@ -42,6 +42,10 @@ Allowance double-spend exploit is mitigated in this contract with functions `inc
 
 However, community agreement on an ERC standard that would protect against this exploit is still pending. Users should be aware of this exploit when interacting with this contract. Developers who use `approve()`/`transferFrom()` should keep in mind that they have to set allowance to 0 first and verify if it was used before setting the new value.
 
+### Ownable
+
+The contract `Governance.sol` uses ownable pattern and has a function `owner()` to report the address with special privileges. Currently, the owner only receives all the initial supply tokens, and there are no additional functionalities associated with the ownable pattern. That may change in the future versions of the contract. The contract owner must be non-zero or the deployment will be reverted.
+
 ### Mint
 
 The function `mint()` is used only during the `initialize()` to mint a fixed amount of tokens. Because of a requirement of the proxy-based upgradability system, no constructors can be used in upgradable contracts. This means that a typically named `initialize()` function has to be used instead and it can be called only once.

@@ -13,23 +13,24 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
     event TokenLocked(address indexed account, uint256 amount);
     event TokenUnlocked(address indexed account, uint256 amount);
 
+    /**
+     * @dev initialize function is used instead of constructors because
+     *      no constructors can be used in upgradable contracts
+     * @param name_ name of the token
+     * @param symbol_ symbol of the token
+     * @param initialSupply_ amount of tokens to be minted and transfered to {owner}
+     * @param owner_ contract owner, must be non-zero
+     */
     function initialize(
         string memory name_,
         string memory symbol_,
         uint256 initialSupply_,
         address owner_
     ) public virtual initializer {
+        require(owner_ != address(0), "Owner must be non-zero address");
         __Governance_init(name_, symbol_, initialSupply_, owner_);
     }
 
-    /**
-     * @dev init function is used instead of constructors because
-     *      no constructors can be used in upgradable contracts
-     * @param name_ name of the token
-     * @param symbol_ symbol of the token
-     * @param initialSupply_ amount of tokens to be minted and transfered to {owner}
-     * @param owner_ smart contract owner
-     */
     function __Governance_init(
         string memory name_,
         string memory symbol_,
@@ -42,11 +43,6 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
         __Governance_init_unchained(initialSupply_, owner_);
     }
 
-    /**
-     * @dev mints {initialSupply} amount of token for {owner}
-     * @param initialSupply_ amount of tokens to be minted for {owner}
-     * @param owner_ smart contract owner
-     */
     function __Governance_init_unchained(uint256 initialSupply_, address owner_) internal initializer {
         _mint(owner_, initialSupply_);
     }

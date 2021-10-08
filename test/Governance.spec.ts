@@ -1,6 +1,6 @@
 import { ethers, upgrades } from 'hardhat'
 
-import { expect, getSigners, INITIAL_SUPPLY, NAME, SYMBOL } from './shared'
+import { expect, getSigners, INITIAL_SUPPLY, NAME, SYMBOL, ZERO_ADDRESS } from './shared'
 import { Signers } from './types'
 import { Governance } from '../typechain'
 
@@ -29,6 +29,14 @@ describe('Governance', async () => {
   })
 
   describe('ERC20', () => {
+    it('reverts if initialize() called when owner is zero address', async () => {
+      const GovernanceContract = await ethers.getContractFactory('Governance')
+      // expect to revert when passed zero address
+      await expect(upgrades.deployProxy(GovernanceContract, [NAME, SYMBOL, INITIAL_SUPPLY, ZERO_ADDRESS], {
+        initializer: 'initialize',
+      })).to.be.revertedWith('Owner must be non-zero address')
+    })
+
     it('has correct name', async () => {
       expect(await token.name()).to.equal(NAME)
     })
