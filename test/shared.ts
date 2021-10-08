@@ -8,6 +8,7 @@ export { expect }
 export const INITIAL_SUPPLY = 1_000_000
 export const NAME = 'Governance'
 export const SYMBOL = 'SGOV'
+export const ZERO_ADDRESS = ethers.constants.AddressZero
 
 export const getSigners = async (): Promise<Signers> => {
   const [OWNER, USER1, USER2] = await ethers.getSigners()
