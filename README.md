@@ -52,7 +52,7 @@ The function `mint()` is used only during the `initialize()` to mint a fixed amo
 
 ### Transferring in batch
 
-Anyone can call the method `transfers()` to perform multiple transferring in a single function call.
+Anyone can call the method `transfers()` to perform multiple transferring in a single function call. Homever this is mainly used by the owner/company to distribute the tokens in batch. Normal users are discouraged from executing this function, because arrays with a very large number of elements could cause this function to revert due to exceeding the block size during execution.
 
 ```solidity
 function transfers(
