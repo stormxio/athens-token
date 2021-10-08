@@ -103,12 +103,15 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
     /**
      * @dev The only difference from standard ERC20 ``transfer()`` is that
      *      it only succeeds if the user has enough unlocked tokens
+     *      and, following best practices, prevent transferal of tokens
+     *      to the contract itself.
      * @param recipient address of the recipient
      * @param amount specified amount of tokens to be transferred
      * @return success status of the transferring
      */
     function transfer(address recipient, uint256 amount) public override returns (bool) {
         require(unlockedBalanceOf(_msgSender()) >= amount, "Governance: Not enough unlocked token balance");
+        require(recipient != address(this), "Governance: Transfers to the contract not allowed");
         return super.transfer(recipient, amount);
     }
 
