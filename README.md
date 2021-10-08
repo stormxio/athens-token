@@ -125,26 +125,6 @@ yarn coverage
 
 ### Deployment
 
-Deployment script files are not included in the repository. However, they can be easily created thanks to Hardhat.
-
-```ts
-// scripts/deploy.ts
-import { ethers, upgrades } from 'hardhat'
-
-async function main() {
-  const NAME = 'Governance'
-  const SYMBOL = 'SGOV'
-  const INITIAL_SUPPLY = 1_000_000
-  const [OWNER] = await ethers.getSigners()
-
-  console.info(`Deploying ${NAME} [${SYMBOL}] with initial supply of ${INITIAL_SUPPLY} and owner ${OWNER.address}...`)
-
-  const Governance = await ethers.getContractFactory('Governance')
-  const token = await upgrades.deployProxy(Governance, [NAME, SYMBOL, INITIAL_SUPPLY, OWNER.address])
-  await token.deployed()
-
-  console.info(`${NAME} [${SYMBOL}] deployed to ${token.address}`)
-}
-
-main()
+```sh
+npx hardhat run ./scripts/deploy-token.ts
 ```
