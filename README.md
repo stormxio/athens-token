@@ -28,6 +28,10 @@ Governance is the new token contract implemented by StormX. It supports the stan
 - The token is upgradable using OpenZeppelin Upgrades Plugins
 - Only the owner can upgrade the token implementation
 
+## Governance
+
+We believe it is in the best interest of the community to start with low friction, low cost, flexible off-chain voting using https://snapshot.org. The voting system does not require the user to pay large amounts of gas to execute votes and thus it promotes higher voter engagement which is the most important metric in any governance project. Snapshot also has the added benefit of experimenting with voting weight strategies using on-chain and off-chain data. The simplest strategy to start is “coin voting” since it does not require us to make assumptions on the best voting weights to use initially. As the community helps us determine fair voting weights via Discord discussions we will propose new SIP, StormX Improvement Proposals for the community to vote on.
+
 ## Technical Executions
 
 StormX developed the contract according to the requirements using Solidity, Hardhat and TypeScript. This section outlines the technical solution.
