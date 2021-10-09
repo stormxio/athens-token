@@ -14,9 +14,10 @@ describe('Governance', async () => {
 
   beforeEach(async () => {
     const GovernanceContract = await ethers.getContractFactory('Governance')
+    const args = [NAME, SYMBOL, INITIAL_SUPPLY, signers.owner.address]
     // eslint-disable-next-line
     // @ts-ignore
-    token = await upgrades.deployProxy(GovernanceContract, [NAME, SYMBOL, INITIAL_SUPPLY, signers.owner.address], {
+    token = await upgrades.deployProxy(GovernanceContract, args, {
       initializer: 'initialize',
     })
     expect(await token.balanceOf(signers.owner.address)).to.equal(INITIAL_SUPPLY)
@@ -32,9 +33,9 @@ describe('Governance', async () => {
     it('reverts if initialize() called when owner is zero address', async () => {
       const GovernanceContract = await ethers.getContractFactory('Governance')
       // expect to revert when passed zero address
-      await expect(upgrades.deployProxy(GovernanceContract, [NAME, SYMBOL, INITIAL_SUPPLY, ZERO_ADDRESS], {
-        initializer: 'initialize',
-      })).to.be.revertedWith('Owner must be non-zero address')
+      const args = [NAME, SYMBOL, INITIAL_SUPPLY, ZERO_ADDRESS]
+      await expect(upgrades.deployProxy(GovernanceContract, args, { initializer: 'initialize' }))
+        .to.be.revertedWith('Owner must be non-zero address')
     })
 
     it('has correct name', async () => {
@@ -147,7 +148,8 @@ describe('Governance', async () => {
       await token.connect(signers.user1.signer).approve(signers.user1.address, 100)
 
       // expect to revert transferFrom
-      await expect(token.connect(signers.user1.signer).transferFrom(signers.user1.address, signers.user2.address, 100))
+      await expect(token.connect(signers.user1.signer)
+        .transferFrom(signers.user1.address, signers.user2.address, 100))
         .to.be.revertedWith('Governance: Not enough unlocked token balance of sender')
 
       expect(await token.balanceOf(signers.user1.address)).to.equal(1000)
@@ -160,10 +162,12 @@ describe('Governance', async () => {
       // assert unlocked token balance
       expect(await token.unlockedBalanceOf(signers.user1.address)).to.equal(500)
       await token.connect(signers.user1.signer).approve(signers.user1.address, 500)
-      await token.connect(signers.user1.signer).transferFrom(signers.user1.address, signers.user2.address, 250)
+      await token.connect(signers.user1.signer)
+        .transferFrom(signers.user1.address, signers.user2.address, 250)
 
       // assert that transferFrom only succeeds if sender is spender
-      await expect(token.connect(signers.user2.signer).transferFrom(signers.user1.address, signers.user2.address, 250))
+      await expect(token.connect(signers.user2.signer)
+        .transferFrom(signers.user1.address, signers.user2.address, 250))
         .to.be.revertedWith('ERC20: transfer amount exceeds allowance')
 
       // assert proper total balance
