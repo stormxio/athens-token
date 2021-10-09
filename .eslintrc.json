@@ -6,7 +6,8 @@
   "globals": {},
   "rules": {
     "@typescript-eslint/no-unused-vars": 1,
-    "unused-imports/no-unused-imports-ts": 1,
-    "no-shadow": 1
+    "max-len": ["error", { "code": 99 }],
+    "no-shadow": 1,
+    "unused-imports/no-unused-imports-ts": 1
   }
 }

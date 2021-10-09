@@ -81,8 +81,15 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
      * @param amount specified amount of tokens to be transferred
      * @return success status of the transferring
      */
-    function transferFrom(address sender, address recipient, uint256 amount) public override returns (bool) {
-        require(unlockedBalanceOf(sender) >= amount, "Governance: Not enough unlocked token balance of sender");
+    function transferFrom(
+        address sender,
+        address recipient,
+        uint256 amount
+    ) public override returns (bool) {
+        require(
+            unlockedBalanceOf(sender) >= amount,
+            "Governance: Not enough unlocked token balance of sender"
+        );
         return super.transferFrom(sender, recipient, amount);
     }
 
@@ -96,7 +103,10 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
      * @return success status of the transferring
      */
     function transfer(address recipient, uint256 amount) public override returns (bool) {
-        require(unlockedBalanceOf(_msgSender()) >= amount, "Governance: Not enough unlocked token balance");
+        require(
+            unlockedBalanceOf(_msgSender()) >= amount,
+            "Governance: Not enough unlocked token balance"
+        );
         require(recipient != address(this), "Governance: Transfers to the contract not allowed");
         return super.transfer(recipient, amount);
     }
@@ -109,12 +119,16 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
      * @param values an array of specified amount of tokens to be transferred
      * @return success status of the batch transferring
      */
-    function transfers(address[] memory recipients, uint256[] memory values) public returns (bool) {
+    function transfers(
+        address[] memory recipients,
+        uint256[] memory values
+    ) public returns (bool) {
         require(recipients.length == values.length, "Governance: Input lengths do not match");
         for (uint256 i = 0; i < recipients.length; i++) {
             transfer(recipients[i], values[i]);
         }
         return true;
     }
-    uint256[50] private __gap; // https://docs.openzeppelin.com/contracts/3.x/upgradeable#storage_gaps
+    // https://docs.openzeppelin.com/contracts/3.x/upgradeable#storage_gaps
+    uint256[50] private __gap;
 }

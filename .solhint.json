@@ -2,6 +2,6 @@
   "extends": "solhint:default",
   "rules": {
     "quotes": ["error", "double"],
-    "max-line-length": ["error", 120]
+    "max-line-length": ["error", 99]
   }
 }
