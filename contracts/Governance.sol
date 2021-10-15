@@ -90,6 +90,7 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
             unlockedBalanceOf(sender) >= amount,
             "Governance: Not enough unlocked token balance of sender"
         );
+        require(recipient != address(this), "Governance: Transfers to the contract not allowed");
         return super.transferFrom(sender, recipient, amount);
     }
 

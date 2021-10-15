@@ -97,8 +97,13 @@ describe('Governance', async () => {
 
   describe('Transfers', () => {
     it('reverts when transfering to the contract', async () => {
-      // expect to revert accidential transfers to the contract itself
+      // expect to revert accidential transfers to the contract itself using transfer()
       await expect(token.connect(signers.user1.signer).transfer(token.address, 100))
+        .to.be.revertedWith('Governance: Transfers to the contract not allowed')
+
+      // expect to revert accidential transfers to the contract itself using transferFrom()
+      await expect(token.connect(signers.user1.signer)
+        .transferFrom(signers.user1.address, token.address, 100))
         .to.be.revertedWith('Governance: Transfers to the contract not allowed')
     })
 
