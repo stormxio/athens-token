@@ -37,7 +37,7 @@
     "chai-bn": "0.3.0",
     "commander": "8.2.0",
     "dotenv-extended": "2.9.0",
-    "eslint": "8.0.0",
+    "eslint": "7.25.0",
     "eslint-plugin-unused-imports": "1.1.5",
     "ethereum-waffle": "3.4.0",
     "hardhat": "2.6.5",

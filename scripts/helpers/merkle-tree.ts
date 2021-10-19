@@ -28,7 +28,7 @@ export default class MerkleTree {
       throw new Error('empty tree')
     }
 
-    const layers = []
+    const layers: Buffer[][] = []
     layers.push(elements)
 
     // Get next layer until we reach the root
