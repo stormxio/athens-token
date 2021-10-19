@@ -7,7 +7,8 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "types": ["@nomiclabs/hardhat-ethers", "@nomiclabs/hardhat-waffle"],
-    "typeRoots": ["./typechain", "./node_modules/@types", "./types"]
+    "typeRoots": ["./typechain", "./node_modules/@types", "./types"],
+    "noImplicitAny": false
   },
   "include": ["./scripts", "./test"],
   "files": ["./hardhat.config.ts"]
