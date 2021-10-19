@@ -1,6 +1,7 @@
 # governance-token
 
 [![Coverage](https://github.com/stormxio/governance-token/actions/workflows/Coverage.yml/badge.svg)](https://github.com/stormxio/governance-token/actions/workflows/Coverage.yml)
+[![Test](https://github.com/stormxio/governance-token/actions/workflows/Test.yml/badge.svg)](https://github.com/stormxio/governance-token/actions/workflows/Test.yml)
 
 ## Executive Summary
 
@@ -111,24 +112,91 @@ When upgrading the smart contract to a new version, a Solidity developer should 
 
  2. https://docs.openzeppelin.com/upgrades-plugins/1.x/writing-upgradeable
 
+## Merkle Distributor
+
+A Merkle distributor approach is used to allow the users to withdraw their airdrop tokens. Owner, Lock Time, and Recover functionalities are added in addition to standard Merkle distributor.
+
+(more details about the airdrop to be added)
+
+### Ownable
+
+The contract `MerkleDistributor.sol` uses ownable pattern and has a function `owner()` to report the address with special privileges. Only the owner is allowed to use `recover()` function. There are no other functionalities related to the owner.
+
+### Lock Time
+
+`lockTime()` returns a timestamp passed during contract deployment. Any `claim()` invocations after the lockTime timestamp will be reverted. Respectively, any `recover()` invocations that happen before lockTime will be reverted.
+
+### Recover
+
+By calling the function `recover()`, an owner can transfer the remaining tokens to it's account. That must happen after lockTime when claiming is not allowed anymore. The event `Recovered(uint256 amount)` is emitted.
+
+### Usage
+
+ 1. Create a JSON file that Merkle Tree will be based on, e.g.: `wallets.json`. It should contain a single level JSON with the wallet as a key and amount as a value, e.g.: ``{ "0x123": "101", "0x234": "102" }``
+
+ 2. Run Merkle Tree generator script: `npx ts-node ./scripts/generate-merkle-root.ts -i wallets.json > tree.json`
+
+ 3. Verify generated tree using: `npx ts-node ./scripts/verify-merkle-root.ts -i tree.json`
+
+ 4. Check [Deployment section](#deployment) to deploy Merkle Distributor contract: `npx hardhat run ./scripts/deploy-merkle-distributor.ts`
+
+ 5. Send enough tokens to deployed Merkle Distributor
+
 ## Local Development
 
 ### Install dependencies
 
-```sh
+```
 yarn
 ```
 
 `postinstall` script should run after installing the dependencies to compile the contracts using Hardhat and generate TypeScript type definitions.
 
+### Run tests
+
+```
+yarn test
+```
+
 ### Run coverage
 
-```sh
+```
 yarn coverage
 ```
 
-### Deployment
+Please keep in mind that Solidity-coverage instruments by injecting statements into the code will increase execution costs, resulting in distorted gas usage simulations. Hence the gas estimation tests are being skipped (marked as pending) when running the coverage.
 
-```sh
+  1. https://github.com/sc-forks/solidity-coverage/blob/master/docs/faq.md#notes-on-gas-distortion
+
+## Deployment
+
+Pass environment variables via `.env` file or shell. Use `ROPSTEN_` prefix for Ropsten network values as in below examples or `MAINNET_` for Mainnet.
+
+```ini
+ROPSTEN_INFURA_API_KEY=infura_api_key
+ROPSTEN_PRIVATE_KEY=ropsten_private_key
+```
+
+### Token
+
+```ini
+ROPSTEN_TOKEN_NAME=Governance
+ROPSTEN_TOKEN_SYMBOL=GOV
+ROPSTEN_TOKEN_INITIAL_SUPPLY=1000000
+```
+
+```
 npx hardhat run ./scripts/deploy-token.ts
+```
+
+### Merkle Distributor
+
+```ini
+ROPSTEN_DISTRIBUTOR_TOKEN=0x123
+ROPSTEN_DISTRIBUTOR_MERKLE_ROOT=0x0000000000000000000000000000000000000000000000000000000000000001
+ROPSTEN_DISTRIBUTOR_LOCK_TIME=1640991600
+```
+
+```
+npx hardhat run ./scripts/deploy-merkle-distributor.ts
 ```

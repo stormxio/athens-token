@@ -1,11 +1,23 @@
 import '@typechain/hardhat'
 import '@nomiclabs/hardhat-ethers'
 import '@nomiclabs/hardhat-waffle'
-import '@openzeppelin/hardhat-upgrades';
+import '@openzeppelin/hardhat-upgrades'
 import 'solidity-coverage'
 
+import dotenv from 'dotenv-extended'
 import { HardhatUserConfig } from 'hardhat/config'
 import { SolcUserConfig } from 'hardhat/types'
+
+dotenv.load()
+
+const getAccounts = (network: string): string[] | undefined => {
+  let accounts
+  const privateKey = process.env[`${network}_PRIVATE_KEY`]
+  if (privateKey) {
+    accounts = [privateKey]
+  }
+  return accounts
+}
 
 const DEFAULT_COMPILER_SETTINGS: SolcUserConfig = {
   version: '0.8.4',
@@ -26,13 +38,12 @@ const config: HardhatUserConfig = {
       allowUnlimitedContractSize: false,
     },
     mainnet: {
-      url: `https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
-    },
-    rinkeby: {
-      url: `https://rinkeby.infura.io/v3/${process.env.INFURA_API_KEY}`,
+      url: `https://mainnet.infura.io/v3/${process.env.MAINNET_INFURA_API_KEY}`,
+      accounts: getAccounts('MAINNET'),
     },
     ropsten: {
-      url: `https://ropsten.infura.io/v3/${process.env.INFURA_API_KEY}`,
+      url: `https://ropsten.infura.io/v3/${process.env.ROPSTEN_INFURA_API_KEY}`,
+      accounts: getAccounts('ROPSTEN'),
     },
   },
   solidity: {

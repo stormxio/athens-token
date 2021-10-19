@@ -1,7 +1,8 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
+import Mocha from 'mocha'
 
-import { Signers } from './types'
+import { Signer, Signers } from './types'
 
 export { expect }
 
@@ -10,20 +11,36 @@ export const NAME = 'Governance'
 export const SYMBOL = 'SGOV'
 export const ZERO_ADDRESS = ethers.constants.AddressZero
 
+export const getBlockTimestamp = async (): Promise<number> => {
+  const blockNumber = await ethers.provider.getBlockNumber()
+  const block = await ethers.provider.getBlock(blockNumber)
+  return block.timestamp
+}
+
 export const getSigners = async (): Promise<Signers> => {
-  const [OWNER, USER1, USER2] = await ethers.getSigners()
+  const signers = await ethers.getSigners()
+
+  const users: Record<string, Signer> = {}
+  for (let i = 1; i < 10; i++) {
+    users[`user${i}`] = {
+      address: signers[i].address,
+      signer: signers[i],
+    }
+  }
+
   return {
     owner: {
-      address: OWNER.address,
-      signer: OWNER
+      address: signers[0].address,
+      signer: signers[0]
     },
-    user1: {
-      address: USER1.address,
-      signer: USER1,
-    },
-    user2: {
-      address: USER2.address,
-      signer: USER2,
-    },
-  }
+    ...users
+  } as Signers
 }
+
+export const increaseEvmTime = async (seconds: number): Promise<void> => {
+  await ethers.provider.send('evm_increaseTime', [seconds])
+  await ethers.provider.send('evm_mine', [])
+}
+
+export const itCoverage = async (title: string, fn?: Mocha.Func): Promise<Mocha.Test> =>
+  process.env.RUNNING_COVERAGE === '1' ? it.skip(title, fn) : it(title, fn)
