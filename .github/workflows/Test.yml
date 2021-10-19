@@ -1,4 +1,4 @@
-name: Coverage
+name: Test
 
 on:
   push:
@@ -21,5 +21,8 @@ jobs:
     - name: Install dependencies
       run: yarn
 
+    - name: Lint
+      run: yarn lint
+
     - name: Coverage
-      run: yarn coverage
+      run: yarn test

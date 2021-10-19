@@ -1,18 +1,28 @@
+import { BigNumber } from 'ethers'
 import { ethers, upgrades } from 'hardhat'
 
+import verifyEnvVars from './helpers/env-vars'
+
 async function main() {
-  const NAME = 'Governance'
-  const SYMBOL = 'SGOV'
-  const INITIAL_SUPPLY = 1_000_000
-  const [OWNER] = await ethers.getSigners()
+  const values = verifyEnvVars(['NAME', 'SYMBOL', 'INITIAL_SUPPLY'], 'TOKEN')
 
-  console.info(`Deploying "${NAME}" [${SYMBOL}] with initial supply of ${INITIAL_SUPPLY} and owner ${OWNER.address}...`)
+  const [owner] = await ethers.getSigners()
 
-  const Governance = await ethers.getContractFactory('Governance')
-  const token = await upgrades.deployProxy(Governance, [NAME, SYMBOL, INITIAL_SUPPLY, OWNER.address])
+  console.info(
+    `Deploying "${values.NAME}" [${values.SYMBOL}] with initial supply of ` +
+    `${values.INITIAL_SUPPLY} and owner ${owner.address}...`
+  )
+
+  const Governance = await ethers.getContractFactory('Governance', owner)
+
+  // 18 decimal places, convert to full units
+  const initialSupply = BigNumber.from(values.INITIAL_SUPPLY).mul(BigNumber.from(10).pow(18))
+  const args = [values.NAME, values.SYMBOL, initialSupply, owner.address]
+  const token = await upgrades.deployProxy(Governance, args)
   await token.deployed()
 
-  console.info(`"${NAME}" [${SYMBOL}] deployed to ${token.address}`)
+  console.info(`"${values.NAME}" [${values.SYMBOL}] deployed to ${token.address}`)
+  console.info(`Verify here: https://etherscan.io/address/${token.address}`)
 }
 
 main()
