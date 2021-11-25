@@ -101,5 +101,13 @@ contract MerkleDistributor is IMerkleDistributor, Ownable {
         emit Recovered(amount);
     }
 
+    /**
+     * @dev this inherited function leaves the contract without an owner, which compromises
+     *      any ability to manage the contract. It is overridden to disable that behavior.
+     */
+    function renounceOwnership() public pure override {
+        revert("MerkleDistributor: renouncing the ownership disallowed");
+    }
+
     event Recovered(uint256 amount);
 }

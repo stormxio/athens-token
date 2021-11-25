@@ -74,6 +74,12 @@ describe('MerkleDistributor', () => {
       const { distributor } = await deployContracts()
       expect(await distributor.owner()).to.equal(signers.owner.address)
     })
+
+    it('reverts when calling renounceOwnership', async () => {
+      const { distributor } = await deployContracts()
+      await expect(distributor.renounceOwnership())
+        .to.be.revertedWith('MerkleDistributor: renouncing the ownership disallowed')
+    })
   })
 
   describe('MerkleRoot', () => {
