@@ -14,8 +14,8 @@ This document provides information about the developed solution.
 Athens is the new token contract implemented by StormX. It supports the standard ERC20 interface, transferring in batch, upgradability, and staking features.
 
 - Supports the standard ERC20 interface
-- The name of the token is "Athens" (to be changed)
-- The symbol of the token is "ATH" (to be changed)
+- The name of the token is "Athens"
+- The symbol of the token is "ATH"
 - The decimals remain according to the standard
 - The token is ownable
 - StormX owns the token
