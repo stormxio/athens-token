@@ -1,7 +1,7 @@
-# governance-token
+# athens-token
 
-[![Coverage](https://github.com/stormxio/governance-token/actions/workflows/Coverage.yml/badge.svg)](https://github.com/stormxio/governance-token/actions/workflows/Coverage.yml)
-[![Test](https://github.com/stormxio/governance-token/actions/workflows/Test.yml/badge.svg)](https://github.com/stormxio/governance-token/actions/workflows/Test.yml)
+[![Coverage](https://github.com/stormxio/athens-token/actions/workflows/Coverage.yml/badge.svg)](https://github.com/stormxio/athens-token/actions/workflows/Coverage.yml)
+[![Test](https://github.com/stormxio/athens-token/actions/workflows/Test.yml/badge.svg)](https://github.com/stormxio/athens-token/actions/workflows/Test.yml)
 
 ## Executive Summary
 
@@ -11,11 +11,11 @@ This document provides information about the developed solution.
 
 ## Requirements
 
-Governance is the new token contract implemented by StormX. It supports the standard ERC20 interface, transferring in batch, upgradability, and staking features.
+Athens is the new token contract implemented by StormX. It supports the standard ERC20 interface, transferring in batch, upgradability, and staking features.
 
 - Supports the standard ERC20 interface
-- The name of the token is "Governance" (to be changed)
-- The symbol of the token is "SGOV" (to be changed)
+- The name of the token is "Athens" (to be changed)
+- The symbol of the token is "ATH" (to be changed)
 - The decimals remain according to the standard
 - The token is ownable
 - StormX owns the token
@@ -39,7 +39,7 @@ StormX developed the contract according to the requirements using Solidity, Hard
 
 ### Standard ERC20 interface
 
-Governance token is in compliance with ERC20 as described in ​[eip-20.md](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md)​. This token contract is upgradable, ownable, and mintable. [OpenZeppelin ERC20Upgradeable](https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/master/contracts/token/ERC20/ERC20Upgradeable.sol) implementation is used to inherit the ERC20 standard interface.
+Athens token is in compliance with ERC20 as described in ​[eip-20.md](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md)​. This token contract is upgradable, ownable, and mintable. [OpenZeppelin ERC20Upgradeable](https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/master/contracts/token/ERC20/ERC20Upgradeable.sol) implementation is used to inherit the ERC20 standard interface.
 
 ### Allowance Double-Spend Exploit
 
@@ -49,7 +49,7 @@ However, community agreement on an ERC standard that would protect against this 
 
 ### Ownable
 
-The contract `Governance.sol` uses ownable pattern and has a function `owner()` to report the address with special privileges. Currently, the owner only receives all the initial supply tokens, and there are no additional functionalities associated with the ownable pattern. That may change in the future versions of the contract. The contract owner must be non-zero or the deployment will be reverted.
+The contract `Athens.sol` uses ownable pattern and has a function `owner()` to report the address with special privileges. Currently, the owner only receives all the initial supply tokens, and there are no additional functionalities associated with the ownable pattern. That may change in the future versions of the contract. The contract owner must be non-zero or the deployment will be reverted.
 
 ### Mint
 
@@ -68,13 +68,13 @@ function transfers(
 
 ### Staking Feature
 
-The Governance token includes a staking feature and StormX will reward users for any staked tokens they have. The staking feature is compatible with how the STMX token implements it.
+The Athens token includes a staking feature and StormX will reward users for any staked tokens they have. The staking feature is compatible with how the STMX token implements it.
 
 This feature comprises the following sections.
 
 #### Lock
 
-By invoking the function `lock()`, users can lock any amount of Governance tokens as long as they have enough unlocked token balance. Locked tokens can not be manipulable by any means. Once the specified amount of tokens are locked successfully, interest starts to be accumulated and calculated off-chain by StormX. The locked token balance of users can be read via read methods (see section Read Methods). While the users are not able to perform any operations on locked tokens, these locked tokens are still reported as owned by the users when the method `balanceOf()` is called. The event `TokenLocked(address account, uint256 amount)` is emitted.
+By invoking the function `lock()`, users can lock any amount of Athens tokens as long as they have enough unlocked token balance. Locked tokens can not be manipulable by any means. Once the specified amount of tokens are locked successfully, interest starts to be accumulated and calculated off-chain by StormX. The locked token balance of users can be read via read methods (see section Read Methods). While the users are not able to perform any operations on locked tokens, these locked tokens are still reported as owned by the users when the method `balanceOf()` is called. The event `TokenLocked(address account, uint256 amount)` is emitted.
 
 ```solidity
 function lock(uint256 amount) public returns (bool)
@@ -82,7 +82,7 @@ function lock(uint256 amount) public returns (bool)
 
 #### Unlock
 
-By invoking the function `unlock()`, users are able to unlock any amount of locked Governance tokens they have and are able to perform any operations on their unlocked tokens as desired. Once the specified amount of tokens becomes unlocked, those tokens will no longer accumulate interest. The event `TokenUnlocked(address account, uint256 amount)` is emitted.
+By invoking the function `unlock()`, users are able to unlock any amount of locked Athens tokens they have and are able to perform any operations on their unlocked tokens as desired. Once the specified amount of tokens becomes unlocked, those tokens will no longer accumulate interest. The event `TokenUnlocked(address account, uint256 amount)` is emitted.
 
 ```solidity
 function unlock(uint256 amount) public returns (bool)
@@ -180,8 +180,8 @@ ROPSTEN_PRIVATE_KEY=ropsten_private_key
 ### Token
 
 ```ini
-ROPSTEN_TOKEN_NAME=Governance
-ROPSTEN_TOKEN_SYMBOL=GOV
+ROPSTEN_TOKEN_NAME=Athens
+ROPSTEN_TOKEN_SYMBOL=ATH
 ROPSTEN_TOKEN_INITIAL_SUPPLY=1000000
 ```
 

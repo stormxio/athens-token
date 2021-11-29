@@ -7,8 +7,8 @@ import { Signer, Signers } from './types'
 export { expect }
 
 export const INITIAL_SUPPLY = 1_000_000
-export const NAME = 'Governance'
-export const SYMBOL = 'SGOV'
+export const NAME = 'Athens'
+export const SYMBOL = 'ATH'
 export const ZERO_ADDRESS = ethers.constants.AddressZero
 
 export const getBlockTimestamp = async (): Promise<number> => {

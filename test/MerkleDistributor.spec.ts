@@ -18,7 +18,7 @@ import { Signers } from './types'
 
 import BalanceTree from '../scripts/helpers/balance-tree'
 import { parseBalanceMap } from '../scripts/helpers/parse-balance-map'
-import { Governance, MerkleDistributor } from '../typechain'
+import { Athens, MerkleDistributor } from '../typechain'
 
 const ONE_BYTES32 = '0x0000000000000000000000000000000000000000000000000000000000000001'
 const ONE_DAY_SECONDS = 86_400
@@ -26,7 +26,7 @@ const ZERO_BYTES32 = '0x00000000000000000000000000000000000000000000000000000000
 
 const deployContracts = async (merkleRoot = ONE_BYTES32, lockTime = -1): Promise<{
   distributor: MerkleDistributor,
-  token: Governance,
+  token: Athens,
 }> => {
   // default to current block timestamp + 1 day
   if (lockTime === -1) {
@@ -36,8 +36,8 @@ const deployContracts = async (merkleRoot = ONE_BYTES32, lockTime = -1): Promise
 
   const signers = await getSigners()
 
-  const GovernanceContract = await ethers.getContractFactory('Governance')
-  const token = await GovernanceContract.deploy() as Governance
+  const AthensContract = await ethers.getContractFactory('Athens')
+  const token = await AthensContract.deploy() as Athens
   token.initialize(NAME, SYMBOL, INITIAL_SUPPLY, signers.owner.address)
 
   const MerkleDistributorContract = await ethers.getContractFactory('MerkleDistributor')
@@ -84,8 +84,8 @@ describe('MerkleDistributor', () => {
 
   describe('MerkleRoot', () => {
     it('reverts when merkle root is zero', async () => {
-      const GovernanceContract = await ethers.getContractFactory('Governance')
-      const token = await GovernanceContract.deploy()
+      const AthensContract = await ethers.getContractFactory('Athens')
+      const token = await AthensContract.deploy()
       const MerkleDistributorContract = await ethers.getContractFactory('MerkleDistributor')
       const lockTime = await getBlockTimestamp() + 60
       await expect(MerkleDistributorContract.deploy(token.address, ZERO_BYTES32, lockTime))
@@ -100,8 +100,8 @@ describe('MerkleDistributor', () => {
 
   describe('LockTime', () => {
     it('reverts lock time is in the past', async () => {
-      const GovernanceContract = await ethers.getContractFactory('Governance')
-      const token = await GovernanceContract.deploy()
+      const AthensContract = await ethers.getContractFactory('Athens')
+      const token = await AthensContract.deploy()
       const MerkleDistributorContract = await ethers.getContractFactory('MerkleDistributor')
       const lockTime = await getBlockTimestamp() - 60
       await expect(MerkleDistributorContract.deploy(token.address, ONE_BYTES32, lockTime))
@@ -140,7 +140,7 @@ describe('MerkleDistributor', () => {
     describe('two account tree', () => {
       let distributor: MerkleDistributor
       let tree: BalanceTree
-      let token: Governance
+      let token: Athens
 
       beforeEach(async () => {
         tree = new BalanceTree([
@@ -181,7 +181,7 @@ describe('MerkleDistributor', () => {
         const localDistributor = contracts.distributor
         const proof0 = tree.getProof(0, signers.user1.address, BigNumber.from(100))
         await expect(localDistributor.claim(0, signers.user1.address, 100, proof0))
-          .to.be.revertedWith('Governance: Not enough unlocked token balance')
+          .to.be.revertedWith('Athens: Not enough unlocked token balance')
       })
 
       it('sets isClaimed', async () => {
@@ -246,7 +246,7 @@ describe('MerkleDistributor', () => {
     describe('larger tree', () => {
       let distributor: MerkleDistributor
       let tree: BalanceTree
-      let token: Governance
+      let token: Athens
 
       beforeEach(async () => {
         tree = new BalanceTree(
@@ -412,7 +412,7 @@ describe('MerkleDistributor', () => {
       }
     }
     let distributor: MerkleDistributor
-    let token: Governance
+    let token: Athens
 
     const provider = new MockProvider({
       ganacheOptions: {
@@ -510,7 +510,7 @@ describe('MerkleDistributor', () => {
 
       await increaseEvmTime(ONE_DAY_SECONDS * 2)
       await expect(localDistributor.connect(signers.owner.signer).recover(202)) // vs 201
-        .to.be.revertedWith('Governance: Not enough unlocked token balance')
+        .to.be.revertedWith('Athens: Not enough unlocked token balance')
       await increaseEvmTime(-ONE_DAY_SECONDS * 2)
     })
 

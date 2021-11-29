@@ -3,22 +3,22 @@ import { ethers, upgrades } from 'hardhat'
 import { expect, getSigners, INITIAL_SUPPLY, NAME, SYMBOL, ZERO_ADDRESS } from './shared'
 import { Signers } from './types'
 
-import { Governance } from '../typechain'
+import { Athens } from '../typechain'
 
-describe('Governance', async () => {
+describe('Athens', async () => {
   let signers: Signers
-  let token: Governance
+  let token: Athens
 
   before(async () => {
     signers = await getSigners()
   })
 
   beforeEach(async () => {
-    const GovernanceContract = await ethers.getContractFactory('Governance')
+    const AthensContract = await ethers.getContractFactory('Athens')
     const args = [NAME, SYMBOL, INITIAL_SUPPLY, signers.owner.address]
-    token = await upgrades.deployProxy(GovernanceContract, args, {
+    token = await upgrades.deployProxy(AthensContract, args, {
       initializer: 'initialize',
-    }) as Governance
+    }) as Athens
     expect(await token.balanceOf(signers.owner.address)).to.equal(INITIAL_SUPPLY)
 
     // no locked tokens initially for {user1}
@@ -30,10 +30,10 @@ describe('Governance', async () => {
 
   describe('ERC20', () => {
     it('reverts if initialize() called when owner is zero address', async () => {
-      const GovernanceContract = await ethers.getContractFactory('Governance')
+      const AthensContract = await ethers.getContractFactory('Athens')
       const args = [NAME, SYMBOL, INITIAL_SUPPLY, ZERO_ADDRESS]
       // expect to revert when passed zero address
-      await expect(upgrades.deployProxy(GovernanceContract, args, { initializer: 'initialize' }))
+      await expect(upgrades.deployProxy(AthensContract, args, { initializer: 'initialize' }))
         .to.be.revertedWith('Owner must be non-zero address')
     })
 
@@ -98,12 +98,12 @@ describe('Governance', async () => {
     it('reverts when transfering to the contract', async () => {
       // expect to revert accidential transfers to the contract itself using transfer()
       await expect(token.connect(signers.user1.signer).transfer(token.address, 100))
-        .to.be.revertedWith('Governance: Transfers to the contract not allowed')
+        .to.be.revertedWith('Athens: Transfers to the contract not allowed')
 
       // expect to revert accidential transfers to the contract itself using transferFrom()
       await expect(token.connect(signers.user1.signer)
         .transferFrom(signers.user1.address, token.address, 100))
-        .to.be.revertedWith('Governance: Transfers to the contract not allowed')
+        .to.be.revertedWith('Athens: Transfers to the contract not allowed')
     })
 
     it('sends transfer successfully', async () => {
@@ -136,7 +136,7 @@ describe('Governance', async () => {
 
       // expect to revert the transfer
       await expect(token.connect(signers.user1.signer).transfer(signers.user2.address, 200))
-        .to.be.revertedWith('Governance: Not enough unlocked token balance')
+        .to.be.revertedWith('Athens: Not enough unlocked token balance')
 
       // assert total balance
       expect(await token.balanceOf(signers.user1.address)).to.equal(1000)
@@ -154,7 +154,7 @@ describe('Governance', async () => {
       // expect to revert transferFrom
       await expect(token.connect(signers.user1.signer)
         .transferFrom(signers.user1.address, signers.user2.address, 100))
-        .to.be.revertedWith('Governance: Not enough unlocked token balance of sender')
+        .to.be.revertedWith('Athens: Not enough unlocked token balance of sender')
 
       expect(await token.balanceOf(signers.user1.address)).to.equal(1000)
     })
@@ -190,7 +190,7 @@ describe('Governance', async () => {
 
       // locked amount exceeds unlocked balance of user
       await expect(token.connect(signers.user1.signer).lock(1001))
-        .to.be.revertedWith('Governance: Not enough unlocked tokens')
+        .to.be.revertedWith('Athens: Not enough unlocked tokens')
 
       // assert proper balance
       expect(await token.unlockedBalanceOf(signers.user1.address)).to.equal(1000)
@@ -208,7 +208,7 @@ describe('Governance', async () => {
 
       // token manipulation fails since all tokens are locked
       await expect(token.connect(signers.user1.signer).transfer(signers.user2.address, 1000))
-        .to.be.revertedWith('Governance: Not enough unlocked token balance')
+        .to.be.revertedWith('Athens: Not enough unlocked token balance')
 
       // assert proper balance for {user1}
       expect(await token.unlockedBalanceOf(signers.user1.address)).to.equal(0)
@@ -228,7 +228,7 @@ describe('Governance', async () => {
 
       // locked amount exceeds unlocked balance of user
       await expect(token.connect(signers.user1.signer).unlock(100))
-        .to.be.revertedWith('Governance: Not enough locked tokens')
+        .to.be.revertedWith('Athens: Not enough locked tokens')
 
       // assert proper balance
       expect(await token.unlockedBalanceOf(signers.user1.address)).to.equal(1000)
@@ -246,7 +246,7 @@ describe('Governance', async () => {
 
       // token manipulation fails since all tokens are locked
       await expect(token.connect(signers.user1.signer).transfer(signers.user2.address, 500))
-        .to.be.revertedWith('Governance: Not enough unlocked token balance')
+        .to.be.revertedWith('Athens: Not enough unlocked token balance')
 
       // unlock certain amount of tokens for token manipulation
       await token.connect(signers.user1.signer).unlock(250)
@@ -269,7 +269,7 @@ describe('Governance', async () => {
       const values = [100]
 
       await expect(token.connect(signers.user1.signer).transfers(recipients, values))
-        .to.be.revertedWith('Governance: Input lengths do not match')
+        .to.be.revertedWith('Athens: Input lengths do not match')
     })
 
     it('reverts if any transfer fails', async () => {
@@ -277,7 +277,7 @@ describe('Governance', async () => {
       const values = [1000, 1]
 
       await expect(token.connect(signers.user1.signer).transfers(recipients, values))
-        .to.be.revertedWith('Governance: Not enough unlocked token balance')
+        .to.be.revertedWith('Athens: Not enough unlocked token balance')
     })
 
     it('uses transfers successfully', async () => {

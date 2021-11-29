@@ -14,12 +14,12 @@ async function main() {
     `${values.INITIAL_SUPPLY} and owner ${owner.address}...`
   )
 
-  const Governance = await ethers.getContractFactory('Governance', owner)
+  const Athens = await ethers.getContractFactory('Athens', owner)
 
   // 18 decimal places, convert to full units
   const initialSupply = BigNumber.from(values.INITIAL_SUPPLY).mul(BigNumber.from(10).pow(18))
   const args = [values.NAME, values.SYMBOL, initialSupply, owner.address]
-  const token = await upgrades.deployProxy(Governance, args)
+  const token = await upgrades.deployProxy(Athens, args)
 
   console.info(`Check tx here: ${getEtherscanUri('tx', token.deployTransaction.hash)}`)
 

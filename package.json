@@ -1,7 +1,7 @@
 {
-  "name": "governance-token",
+  "name": "athens-token",
   "version": "0.0.1",
-  "description": "StormX ERC-20 Governance token.",
+  "description": "StormX ERC-20 Athens token.",
   "scripts": {
     "cleanup": "rm -rf artifacts/ cache/ coverage/ types/ typechain/",
     "compile": "hardhat compile",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stormx/governance-token.git"
+    "url": "git+https://github.com/stormx/athens-token.git"
   },
   "author": "bonnevoyager",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/stormx/governance-token/issues"
+    "url": "https://github.com/stormx/athens-token/issues"
   },
-  "homepage": "https://github.com/stormx/governance-token#readme",
+  "homepage": "https://github.com/stormx/athens-token#readme",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.2",
     "@nomiclabs/hardhat-waffle": "2.0.1",

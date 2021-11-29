@@ -5,7 +5,7 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
-contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
+contract Athens is Initializable, OwnableUpgradeable, ERC20Upgradeable {
     // Staking variable
     mapping(address => uint256) public lockedBalanceOf;
 
@@ -53,7 +53,7 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
      */
     function lock(uint256 amount) public returns (bool) {
         address account = _msgSender();
-        require(unlockedBalanceOf(account) >= amount, "Governance: Not enough unlocked tokens");
+        require(unlockedBalanceOf(account) >= amount, "Athens: Not enough unlocked tokens");
         lockedBalanceOf[account] = lockedBalanceOf[account] + amount;
         emit TokenLocked(account, amount);
         return true;
@@ -67,7 +67,7 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
      */
     function unlock(uint256 amount) public returns (bool) {
         address account = _msgSender();
-        require(lockedBalanceOf[account] >= amount, "Governance: Not enough locked tokens");
+        require(lockedBalanceOf[account] >= amount, "Athens: Not enough locked tokens");
         lockedBalanceOf[account] = lockedBalanceOf[account] - amount;
         emit TokenUnlocked(account, amount);
         return true;
@@ -88,9 +88,9 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
     ) public override returns (bool) {
         require(
             unlockedBalanceOf(sender) >= amount,
-            "Governance: Not enough unlocked token balance of sender"
+            "Athens: Not enough unlocked token balance of sender"
         );
-        require(recipient != address(this), "Governance: Transfers to the contract not allowed");
+        require(recipient != address(this), "Athens: Transfers to the contract not allowed");
         return super.transferFrom(sender, recipient, amount);
     }
 
@@ -106,9 +106,9 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
     function transfer(address recipient, uint256 amount) public override returns (bool) {
         require(
             unlockedBalanceOf(_msgSender()) >= amount,
-            "Governance: Not enough unlocked token balance"
+            "Athens: Not enough unlocked token balance"
         );
-        require(recipient != address(this), "Governance: Transfers to the contract not allowed");
+        require(recipient != address(this), "Athens: Transfers to the contract not allowed");
         return super.transfer(recipient, amount);
     }
 
@@ -124,7 +124,7 @@ contract Governance is Initializable, OwnableUpgradeable, ERC20Upgradeable {
         address[] memory recipients,
         uint256[] memory values
     ) public returns (bool) {
-        require(recipients.length == values.length, "Governance: Input lengths do not match");
+        require(recipients.length == values.length, "Athens: Input lengths do not match");
         for (uint256 i = 0; i < recipients.length; i++) {
             transfer(recipients[i], values[i]);
         }
