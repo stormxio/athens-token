@@ -1,6 +1,7 @@
 import { ethers } from 'hardhat'
 
 import verifyEnvVars from './helpers/env-vars'
+import getEtherscanUri from './helpers/etherscan'
 
 async function main() {
   const values = verifyEnvVars(['TOKEN', 'MERKLE_ROOT', 'LOCK_TIME'], 'DISTRIBUTOR')
@@ -16,10 +17,13 @@ async function main() {
   const merkleDistributor = await MerkleDistributor.deploy(
     values.TOKEN, values.MERKLE_ROOT, values.LOCK_TIME
   )
+
+  console.info(`Check tx here: ${getEtherscanUri('tx', merkleDistributor.deployTransaction.hash)}`)
+
   await merkleDistributor.deployed()
 
-  console.info(`Merkle Distributor deployed at ${merkleDistributor.address}`)
-  console.info(`Verify here: https://etherscan.io/address/${merkleDistributor.address}`)
+  console.info(`Merkle Distributor deployed to: ${merkleDistributor.address}`)
+  console.info(`Verify here: ${getEtherscanUri('address', merkleDistributor.address)}`)
 }
 
 main()

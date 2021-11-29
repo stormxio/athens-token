@@ -67,7 +67,7 @@ const getRoot = (balances: { account: string; amount: BigNumber; index: number }
     return idx === 0 || !nodes[idx - 1].equals(el)
   })
 
-  const layers = []
+  const layers: Buffer[][] = []
   layers.push(nodes)
 
   // Get next layer until we reach the root
@@ -117,7 +117,13 @@ try {
 
   const root = getRoot(balances).toString('hex')
   const rootMatches = root === merkleRootHex.slice(2)
+  const summedBalances = balances.reduce((sum, balance) => {
+    return sum.add(balance.amount)
+  }, BigNumber.from(0))
+
   console.log(`Reconstructed merkle root: 0x${root}`)
+  console.log(`Summed balances: ${utils.formatEther(summedBalances)} (${summedBalances})`)
+
   if (!rootMatches) {
     console.warn('Root does NOT match the one read from the JSON, something might be wrong!')
   } else {

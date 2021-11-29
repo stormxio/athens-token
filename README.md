@@ -132,7 +132,7 @@ By calling the function `recover()`, an owner can transfer the remaining tokens 
 
 ### Usage
 
- 1. Create a JSON file that Merkle Tree will be based on, e.g.: `wallets.json`. It should contain a single level JSON with the wallet as a key and amount as a value, e.g.: ``{ "0x123": "101", "0x234": "102" }``
+ 1. Create a JSON file that Merkle Tree will be based on, e.g.: `wallets.json`. It should contain a single level JSON with the wallet as a key and amount as a value, e.g.: ``{ "0x123": 100000000000000000000, "0x234": 110000000000000000000 }``
 
  2. Run Merkle Tree generator script: `npx ts-node ./scripts/generate-merkle-root.ts -i wallets.json > tree.json`
 
@@ -140,7 +140,7 @@ By calling the function `recover()`, an owner can transfer the remaining tokens 
 
  4. Check [Deployment section](#deployment) to deploy Merkle Distributor contract: `npx hardhat run ./scripts/deploy-merkle-distributor.ts`
 
- 5. Send enough tokens to deployed Merkle Distributor
+ 5. Send enough tokens to deployed Merkle Distributor contract
 
 ## Local Development
 

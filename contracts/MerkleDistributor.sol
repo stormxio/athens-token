@@ -106,7 +106,7 @@ contract MerkleDistributor is IMerkleDistributor, Ownable {
      *      any ability to manage the contract. It is overridden to disable that behavior.
      */
     function renounceOwnership() public pure override {
-        revert("MerkleDistributor: renouncing the ownership disallowed");
+        revert("MerkleDistributor: Renouncing the ownership disallowed");
     }
 
     event Recovered(uint256 amount);
