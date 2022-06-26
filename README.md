@@ -3,6 +3,8 @@
 [![Coverage](https://github.com/stormxio/athens-token/actions/workflows/Coverage.yml/badge.svg)](https://github.com/stormxio/athens-token/actions/workflows/Coverage.yml)
 [![Test](https://github.com/stormxio/athens-token/actions/workflows/Test.yml/badge.svg)](https://github.com/stormxio/athens-token/actions/workflows/Test.yml)
 
+Athens (ATH) is deployed on [mainnet](https://etherscan.io/token/0x2f9411088cef82fd9fb904eb8092f28eb485c8f6): `0x2f9411088cef82fd9fb904eb8092f28eb485c8f6`
+
 ## Executive Summary
 
 StormX currently operates an ERC20 token deployed on Ethereum mainnet. The token contract includes a feature for permissioned voting by locking “staking” the tokens. The user is then allowed to vote off-chain via Snapshot.org. The contract also includes upgradabilty via OpenZepplin’s upgradable plugin.
