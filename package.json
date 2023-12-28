@@ -9,7 +9,15 @@
     "generate-types": "npx typechain --target=ethers-v5 'artifacts/contracts/*.json'",
     "lint": "./node_modules/.bin/eslint --ext .ts ./test && ./node_modules/.bin/solhint contracts/*.sol",
     "postinstall": "npx hardhat compile && npm run generate-types",
-    "test": "hardhat test"
+    "test": "hardhat test",
+    "deploy:ropsten": "hardhat run --network ropsten",
+    "deploy:arbitrumSepolia": "hardhat run --network arbitrumSepolia",
+    "deploy:mainnet": "hardhat run --network mainnet",
+    "deploy:arbitrumOne": "hardhat run --network arbitrumOne",
+    "verify:ropsten": "hardhat verify --network ropsten",
+    "verify:arbitrumSepolia": "hardhat verify --network arbitrumSepolia",
+    "verify:mainnet": "hardhat verify --network mainnet",
+    "verify:arbitrumOne": "hardhat verify --network arbitrumOne"
   },
   "repository": {
     "type": "git",
@@ -23,6 +31,7 @@
   "homepage": "https://github.com/stormx/athens-token#readme",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.2",
+    "@nomicfoundation/hardhat-verify": "^1.1.1",
     "@nomiclabs/hardhat-waffle": "2.0.1",
     "@openzeppelin/contracts": "4.3.2",
     "@openzeppelin/contracts-upgradeable": "4.4.1",
