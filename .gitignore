@@ -10,3 +10,4 @@ types/
 typechain/
 coverage.json
 secrets.js
+typechain-types
