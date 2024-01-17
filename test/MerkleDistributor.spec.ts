@@ -306,7 +306,7 @@ describe('MerkleDistributor', () => {
       before(() => {
         const elements: {
           account: string
-          amount: BigInt
+          amount: bigint
         }[] = []
 
         for (let i = 0; i < NUM_LEAVES; i++) {
@@ -411,7 +411,6 @@ describe('MerkleDistributor', () => {
     let distributor: MerkleDistributor
     let token: Athens
 
-    let signers: Signers
 
 
     beforeEach(async () => {
@@ -527,7 +526,8 @@ describe('MerkleDistributor', () => {
       await increaseEvmTime(-ONE_DAY_SECONDS * 2)
 
       expect(await localToken.balanceOf(localDistributor.target)).to.equal(101)
-      expect(await localToken.balanceOf(signers.owner.address)).to.equal(Number(startBalance) + 100)
+      expect(await localToken.balanceOf(signers.owner.address))
+        .to.equal(Number(startBalance) + 100)
     })
   })
 })
