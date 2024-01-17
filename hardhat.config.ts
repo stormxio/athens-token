@@ -1,13 +1,12 @@
-import '@typechain/hardhat'
-import '@nomiclabs/hardhat-ethers'
-import '@nomiclabs/hardhat-waffle'
-import '@openzeppelin/hardhat-upgrades'
-import 'solidity-coverage'
-import "@nomicfoundation/hardhat-verify";
-
-import dotenv from 'dotenv-extended'
-import { HardhatUserConfig } from 'hardhat/config'
+import { HardhatUserConfig, } from "hardhat/config";
 import { SolcUserConfig } from 'hardhat/types'
+import "@typechain/hardhat";
+import "@nomicfoundation/hardhat-ethers";
+import "@nomicfoundation/hardhat-verify";
+import "solidity-coverage";
+import '@openzeppelin/hardhat-upgrades';
+import '@nomicfoundation/hardhat-chai-matchers';
+import dotenv from 'dotenv-extended';
 
 dotenv.load()
 
