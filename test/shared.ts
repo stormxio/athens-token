@@ -6,10 +6,10 @@ import { Signer, Signers } from './types'
 
 export { expect }
 
-export const INITIAL_SUPPLY = 1_000_000
+export const INITIAL_SUPPLY = 1000000
 export const NAME = 'Athens'
 export const SYMBOL = 'ATH'
-export const ZERO_ADDRESS = ethers.constants.AddressZero
+export const ZERO_ADDRESS = ethers.ZeroAddress
 
 export const getBlockTimestamp = async (): Promise<number> => {
   const blockNumber = await ethers.provider.getBlockNumber()

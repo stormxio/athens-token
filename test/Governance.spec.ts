@@ -19,10 +19,10 @@ describe('Athens', async () => {
     token = await upgrades.deployProxy(AthensContract, args, {
       initializer: 'initialize',
     }) as Athens
-    expect(await token.balanceOf(signers.owner.address)).to.equal(INITIAL_SUPPLY)
+    expect(await token.balanceOf(signers.owner.address)).to.equal(BigInt(INITIAL_SUPPLY))
 
     // no locked tokens initially for {user1}
-    expect(await token.lockedBalanceOf(signers.user1.address)).to.equal(0)
+    expect(await token.lockedBalanceOf(signers.user1.address)).to.equal(BigInt(0))
 
     // transfer 1000 tokens to {user1}
     await token.connect(signers.owner.signer).transfer(signers.user1.address, 1000)
@@ -34,7 +34,7 @@ describe('Athens', async () => {
       const args = [NAME, SYMBOL, INITIAL_SUPPLY, ZERO_ADDRESS]
       // expect to revert when passed zero address
       await expect(upgrades.deployProxy(AthensContract, args, { initializer: 'initialize' }))
-        .to.be.revertedWith('Owner must be non-zero address')
+        .to.be.rejectedWith('Owner must be non-zero address')
     })
 
     it('has correct name', async () => {
@@ -97,12 +97,12 @@ describe('Athens', async () => {
   describe('Transfers', () => {
     it('reverts when transfering to the contract', async () => {
       // expect to revert accidential transfers to the contract itself using transfer()
-      await expect(token.connect(signers.user1.signer).transfer(token.address, 100))
+      await expect(token.connect(signers.user1.signer).transfer(token.target, 100))
         .to.be.revertedWith('Athens: Transfers to the contract not allowed')
 
       // expect to revert accidential transfers to the contract itself using transferFrom()
       await expect(token.connect(signers.user1.signer)
-        .transferFrom(signers.user1.address, token.address, 100))
+        .transferFrom(signers.user1.address, token.target, 100))
         .to.be.revertedWith('Athens: Transfers to the contract not allowed')
     })
 
@@ -172,7 +172,7 @@ describe('Athens', async () => {
       // assert that transferFrom only succeeds if sender is spender
       await expect(token.connect(signers.user2.signer)
         .transferFrom(signers.user1.address, signers.user2.address, 250))
-        .to.be.revertedWith('ERC20: transfer amount exceeds allowance')
+        .to.be.revertedWith('ERC20: insufficient allowance')
 
       // assert proper total balance
       expect(await token.balanceOf(signers.user1.address)).to.equal(750)
@@ -202,7 +202,7 @@ describe('Athens', async () => {
       // no locked tokens initially
       expect(await token.lockedBalanceOf(signers.user1.address)).to.equal(0)
       expect(await token.unlockedBalanceOf(signers.user1.address)).to.equal(1000)
-      
+
       // lock all tokens for the user
       await token.connect(signers.user1.signer).lock(1000)
 
