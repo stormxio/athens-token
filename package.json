@@ -36,7 +36,7 @@
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers",
     "@nomiclabs/hardhat-waffle": "2.0.1",
     "@openzeppelin/contracts": "4.9.3",
-    "@openzeppelin/contracts-upgradeable": "^4.9.5",
+    "@openzeppelin/contracts-upgradeable": "^4.9.6",
     "@openzeppelin/hardhat-upgrades": "^2.5.1",
     "@typechain/ethers-v5": "7.1.0",
     "@typechain/ethers-v6": "^0.5.1",
